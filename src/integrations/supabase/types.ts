@@ -14,7 +14,127 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      follow_ups: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          follow_up_date: string
+          follow_up_type: Database["public"]["Enums"]["followup_type"]
+          id: string
+          lead_id: string
+          next_follow_up_date: string | null
+          remarks: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          follow_up_date?: string
+          follow_up_type: Database["public"]["Enums"]["followup_type"]
+          id?: string
+          lead_id: string
+          next_follow_up_date?: string | null
+          remarks: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          follow_up_date?: string
+          follow_up_type?: Database["public"]["Enums"]["followup_type"]
+          id?: string
+          lead_id?: string
+          next_follow_up_date?: string | null
+          remarks?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "follow_ups_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      leads: {
+        Row: {
+          assigned_to: string
+          company_name: string
+          created_at: string
+          created_by: string | null
+          email: string
+          estimated_value: number | null
+          id: string
+          lead_name: string
+          mobile: string
+          remarks: string | null
+          service: Database["public"]["Enums"]["lead_service"]
+          source: Database["public"]["Enums"]["lead_source"]
+          status: Database["public"]["Enums"]["lead_status"]
+          updated_at: string
+        }
+        Insert: {
+          assigned_to: string
+          company_name: string
+          created_at?: string
+          created_by?: string | null
+          email: string
+          estimated_value?: number | null
+          id?: string
+          lead_name: string
+          mobile: string
+          remarks?: string | null
+          service: Database["public"]["Enums"]["lead_service"]
+          source: Database["public"]["Enums"]["lead_source"]
+          status?: Database["public"]["Enums"]["lead_status"]
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string
+          company_name?: string
+          created_at?: string
+          created_by?: string | null
+          email?: string
+          estimated_value?: number | null
+          id?: string
+          lead_name?: string
+          mobile?: string
+          remarks?: string | null
+          service?: Database["public"]["Enums"]["lead_service"]
+          source?: Database["public"]["Enums"]["lead_source"]
+          status?: Database["public"]["Enums"]["lead_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leads_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "team_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      team_members: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +143,36 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      followup_type:
+        | "Call"
+        | "Email"
+        | "Meeting"
+        | "WhatsApp"
+        | "Site Visit"
+        | "Other"
+      lead_service:
+        | "Website Development"
+        | "Web Application"
+        | "Mobile Application"
+        | "E-Commerce"
+        | "SEO"
+        | "Digital Marketing"
+        | "Other"
+      lead_source:
+        | "Website"
+        | "WhatsApp"
+        | "Referral"
+        | "LinkedIn"
+        | "Google"
+        | "Facebook"
+        | "Other"
+      lead_status:
+        | "New"
+        | "Contacted"
+        | "Proposal Sent"
+        | "Negotiation"
+        | "Won"
+        | "Lost"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +299,41 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      followup_type: [
+        "Call",
+        "Email",
+        "Meeting",
+        "WhatsApp",
+        "Site Visit",
+        "Other",
+      ],
+      lead_service: [
+        "Website Development",
+        "Web Application",
+        "Mobile Application",
+        "E-Commerce",
+        "SEO",
+        "Digital Marketing",
+        "Other",
+      ],
+      lead_source: [
+        "Website",
+        "WhatsApp",
+        "Referral",
+        "LinkedIn",
+        "Google",
+        "Facebook",
+        "Other",
+      ],
+      lead_status: [
+        "New",
+        "Contacted",
+        "Proposal Sent",
+        "Negotiation",
+        "Won",
+        "Lost",
+      ],
+    },
   },
 } as const
