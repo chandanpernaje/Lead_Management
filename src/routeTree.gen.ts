@@ -16,6 +16,7 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedLeadsIndexRouteImport } from './routes/_authenticated/leads/index'
 import { Route as AuthenticatedLeadsNewRouteImport } from './routes/_authenticated/leads/new'
 import { Route as AuthenticatedLeadsLeadIdIndexRouteImport } from './routes/_authenticated/leads/$leadId/index'
+import { Route as AuthenticatedLeadsLeadIdEditRouteImport } from './routes/_authenticated/leads/$leadId/edit'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,6 +53,12 @@ const AuthenticatedLeadsLeadIdIndexRoute =
     path: '/leads/$leadId/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedLeadsLeadIdEditRoute =
+  AuthenticatedLeadsLeadIdEditRouteImport.update({
+    id: '/leads/$leadId/edit',
+    path: '/leads/$leadId/edit',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/leads/new': typeof AuthenticatedLeadsNewRoute
   '/leads/': typeof AuthenticatedLeadsIndexRoute
+  '/leads/$leadId/edit': typeof AuthenticatedLeadsLeadIdEditRoute
   '/leads/$leadId/': typeof AuthenticatedLeadsLeadIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -67,6 +75,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/leads/new': typeof AuthenticatedLeadsNewRoute
   '/leads': typeof AuthenticatedLeadsIndexRoute
+  '/leads/$leadId/edit': typeof AuthenticatedLeadsLeadIdEditRoute
   '/leads/$leadId': typeof AuthenticatedLeadsLeadIdIndexRoute
 }
 export interface FileRoutesById {
@@ -77,14 +86,28 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/leads/new': typeof AuthenticatedLeadsNewRoute
   '/_authenticated/leads/': typeof AuthenticatedLeadsIndexRoute
+  '/_authenticated/leads/$leadId/edit': typeof AuthenticatedLeadsLeadIdEditRoute
   '/_authenticated/leads/$leadId/': typeof AuthenticatedLeadsLeadIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/auth' | '/dashboard' | '/leads/new' | '/leads/' | '/leads/$leadId/'
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/leads/new'
+    | '/leads/'
+    | '/leads/$leadId/edit'
+    | '/leads/$leadId/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/dashboard' | '/leads/new' | '/leads' | '/leads/$leadId'
+  to:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/leads/new'
+    | '/leads'
+    | '/leads/$leadId/edit'
+    | '/leads/$leadId'
   id:
     | '__root__'
     | '/'
@@ -93,6 +116,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/leads/new'
     | '/_authenticated/leads/'
+    | '/_authenticated/leads/$leadId/edit'
     | '/_authenticated/leads/$leadId/'
   fileRoutesById: FileRoutesById
 }
@@ -153,6 +177,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedLeadsLeadIdIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/leads/$leadId/edit': {
+      id: '/_authenticated/leads/$leadId/edit'
+      path: '/leads/$leadId/edit'
+      fullPath: '/leads/$leadId/edit'
+      preLoaderRoute: typeof AuthenticatedLeadsLeadIdEditRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -160,6 +191,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedLeadsNewRoute: typeof AuthenticatedLeadsNewRoute
   AuthenticatedLeadsIndexRoute: typeof AuthenticatedLeadsIndexRoute
+  AuthenticatedLeadsLeadIdEditRoute: typeof AuthenticatedLeadsLeadIdEditRoute
   AuthenticatedLeadsLeadIdIndexRoute: typeof AuthenticatedLeadsLeadIdIndexRoute
 }
 
@@ -167,6 +199,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedLeadsNewRoute: AuthenticatedLeadsNewRoute,
   AuthenticatedLeadsIndexRoute: AuthenticatedLeadsIndexRoute,
+  AuthenticatedLeadsLeadIdEditRoute: AuthenticatedLeadsLeadIdEditRoute,
   AuthenticatedLeadsLeadIdIndexRoute: AuthenticatedLeadsLeadIdIndexRoute,
 }
 
