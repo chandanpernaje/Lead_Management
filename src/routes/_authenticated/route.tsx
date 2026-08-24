@@ -7,8 +7,9 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated")({
-  component: AuthenticatedLayout;
+  component: AuthenticatedLayout,
 });
+
 
 function AuthenticatedLayout() {
   const { session, loading } = useAuth();
