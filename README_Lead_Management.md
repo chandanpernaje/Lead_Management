@@ -62,3 +62,17 @@ Here is the complete breakdown of all the technologies, frameworks, libraries, a
 ### Tooling & Quality Assurance
 - **ESLint**: Linter for identifying and reporting on patterns found in ECMAScript/JavaScript code.
 - **Prettier**: Code formatter ensuring consistent style across the codebase.
+
+## Architecture and Design Decisions
+
+- **Frontend & Backend Architecture**: The application uses **TanStack Start**, which allows us to write full-stack React applications securely. The server functions (like `apiListLeads`) act as our backend APIs, validating inputs server-side with Zod before communicating with the database.
+- **Database Choice & Mobile Compatibility**: **Supabase (PostgreSQL)** was chosen for the database. By utilizing Supabase, the backend inherently provides a REST API (PostgREST) which can be consumed by any future mobile application easily.
+- **Authentication**: Handled via Supabase Auth. Only authenticated users can access the system. The application defaults the `admin` username to an internal email so standard auth patterns work flawlessly.
+- **Duplicate Lead Handling**: Handled at the database level using `UNIQUE INDEX` on `email` and `mobile` fields. If a user tries to create a duplicate lead, the backend catches the constraint violation and gracefully returns a user-friendly error to the frontend.
+- **Error Reporting**: Handled securely via `try/catch` and UI-friendly toast notifications via Sonner.
+
+## Assumptions
+
+- **Lead Status Pipeline**: Assumed a flexible pipeline: `New -> Contacted -> Proposal Sent -> Negotiation -> Won | Lost`.
+- **Admin Assignment**: Assumed leads are assigned to internal team members. A mock team member table is pre-populated in the database.
+- **Estimated Value Currency**: Assumed generic numeric values (stored as `NUMERIC(12,2)`) and formatted dynamically on the frontend.

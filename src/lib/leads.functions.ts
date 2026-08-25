@@ -22,39 +22,39 @@ export const apiListTeamMembers = createServerFn({ method: "GET" })
 
 export const apiListLeads = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: unknown) => leadFiltersSchema.parse(data))
+  .validator((data: unknown) => leadFiltersSchema.parse(data))
   .handler(async ({ data, context }) => listLeads(context.supabase, data));
 
 export const apiGetLead = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: unknown) => idSchema.parse(data))
+  .validator((data: unknown) => idSchema.parse(data))
   .handler(async ({ data, context }) => getLead(context.supabase, data.id));
 
 export const apiCreateLead = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: unknown) => leadInputSchema.parse(data))
+  .validator((data: unknown) => leadInputSchema.parse(data))
   .handler(async ({ data, context }) => createLead(context.supabase, data, context.userId));
 
 export const apiUpdateLead = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: unknown) =>
+  .validator((data: unknown) =>
     z.object({ id: z.string().uuid(), values: leadInputSchema }).parse(data),
   )
   .handler(async ({ data, context }) => updateLead(context.supabase, data.id, data.values));
 
 export const apiDeleteLead = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: unknown) => idSchema.parse(data))
+  .validator((data: unknown) => idSchema.parse(data))
   .handler(async ({ data, context }) => deleteLead(context.supabase, data.id));
 
 export const apiAddFollowUp = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: unknown) => followUpInputSchema.parse(data))
+  .validator((data: unknown) => followUpInputSchema.parse(data))
   .handler(async ({ data, context }) => addFollowUp(context.supabase, data, context.userId));
 
 export const apiDeleteFollowUp = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: unknown) => idSchema.parse(data))
+  .validator((data: unknown) => idSchema.parse(data))
   .handler(async ({ data, context }) => deleteFollowUp(context.supabase, data.id));
 
 export const apiDashboardStats = createServerFn({ method: "GET" })
