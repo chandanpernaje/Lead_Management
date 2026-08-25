@@ -36,9 +36,6 @@ Here is the complete breakdown of all the technologies, frameworks, libraries, a
 - **Vaul**: A drawer component for React used typically for mobile-friendly bottom sheets.
 - **React Resizable Panels**: Used to create resizable split-pane layouts.
 
-### Tooling & Quality Assurance
-- **ESLint**: Linter for identifying and reporting on patterns found in ECMAScript/JavaScript code.
-- **Prettier**: Code formatter ensuring consistent style across the codebase.
 
 ## Architecture and Design Decisions
 
