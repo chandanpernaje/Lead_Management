@@ -44,8 +44,36 @@ function isH3SwallowedErrorBody(body: string): boolean {
   }
 }
 
+/**
+ * Self-hosted Workers (e.g. `wrangler deploy`) do not receive the project's
+ * `.env` file, so server-only Supabase vars can be missing at runtime. Bridge
+ * them from the Worker bindings, then from the build-time injected VITE_ values
+ * (public URL + publishable key only — never a service role key).
+ */
+function bridgeSupabaseEnv(env: unknown) {
+  const bindings = (env ?? {}) as Record<string, string | undefined>;
+  const globalProcess = (globalThis as { process?: { env?: Record<string, string | undefined> } })
+    .process;
+  if (!globalProcess?.env) return;
+  const target = globalProcess.env;
+
+  const fallbacks: Record<string, string | undefined> = {
+    SUPABASE_URL: bindings["SUPABASE_URL"] ?? import.meta.env["VITE_SUPABASE_URL"],
+    SUPABASE_PUBLISHABLE_KEY:
+      bindings["SUPABASE_PUBLISHABLE_KEY"] ?? import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"],
+    SUPABASE_PROJECT_ID:
+      bindings["SUPABASE_PROJECT_ID"] ?? import.meta.env["VITE_SUPABASE_PROJECT_ID"],
+    SUPABASE_SERVICE_ROLE_KEY: bindings["SUPABASE_SERVICE_ROLE_KEY"],
+  };
+
+  for (const [key, value] of Object.entries(fallbacks)) {
+    if (!target[key] && value) target[key] = value;
+  }
+}
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
+    bridgeSupabaseEnv(env);
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
